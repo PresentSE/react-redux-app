@@ -20,6 +20,10 @@ const App = (params) => {
     store.dispatch(actions.titleChanged(taskId));
   };
 
+  const deletedTask = (taskId) => {
+    store.dispatch(actions.taskDeleted(taskId));
+  };
+
   return (
     <>
       <h1>APP</h1>
@@ -30,6 +34,7 @@ const App = (params) => {
             <p>{`Completed: ${el.completed}`}</p>
             <button onClick={() => completeTask(el.id)}>Complete</button>
             <button onClick={() => changeTitle(el.id)}>Change title</button>
+            <button onClick={() => deletedTask(el.id)}>Delete task</button>
             <hr />
           </li>
         ))}
