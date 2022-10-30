@@ -1,11 +1,13 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { logger } from "./middleware/logger";
 import taskReduser from "./task";
 
-export function configureStore() {
-  return createStore(
-    taskReduser,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  );
+export function createStore() {
+  return configureStore({
+    reducer: taskReduser,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+    devTools: process.env.NODE_ENV !== "production",
+  });
 }
 
-export default configureStore;
+export default createStore;
