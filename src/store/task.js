@@ -1,7 +1,7 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import todosService from "../services/todos.service";
 
-const initialState = [];
+const initialState = { entities: [], isLoading: true, error: null };
 
 // const update = createAction("task/updated");
 // const remove = createAction("task/removed");
@@ -11,25 +11,33 @@ const taskSlice = createSlice({
   initialState,
   reducers: {
     recived(state, action) {
-      return action.payload;
+      state.entities = action.payload;
+      state.isLoading = false;
     },
     update(state, action) {
-      console.log(action);
-      const elementIndex = state.findIndex((el) => el.id === action.payload.id);
-      state[elementIndex] = { ...state[elementIndex], ...action.payload };
+      const elementIndex = state.entities.findIndex(
+        (el) => el.id === action.payload.id
+      );
+      state.entities[elementIndex] = {
+        ...state.entities[elementIndex],
+        ...action.payload,
+      };
     },
     remove(state, action) {
-      console.log(action);
-      return state.filter((el) => el.id !== action.payload.id);
+      return state.entities.filter((el) => el.id !== action.payload.id);
+    },
+    taskRequested(state) {
+      state.isLoading = true;
+    },
+    taskRequestFailed(state, action) {
+      state.error = action.payload;
+      state.isLoading = false;
     },
   },
 });
 
 const { actions, reducer: taskReduser } = taskSlice;
-const { update, remove, recived } = actions;
-
-const taskRequested = createAction("task/requested");
-const taskRequestFailed = createAction("task/taskRequestFailed");
+const { update, remove, recived, taskRequested, taskRequestFailed } = actions;
 
 export const getTasks = () => async (dispatch) => {
   dispatch(taskRequested());
