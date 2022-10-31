@@ -4,22 +4,25 @@ import {
   titleChanged,
   taskDeleted,
   completeTask,
+  loadTasks,
   getTasks,
+  getTaskLoadingStatus,
 } from "./store/task";
 import configureStore from "./store/store";
 import { Provider, useSelector, useDispatch } from "react-redux";
+import { getError } from "./store/errors";
 
 const store = configureStore();
 
 const App = (params) => {
-  const state = useSelector((state) => state.entities);
-  const isLoading = useSelector((state) => state.isLoading);
-  const error = useSelector((state) => state.error);
+  const state = useSelector(getTasks());
+  const isLoading = useSelector(getTaskLoadingStatus());
+  const error = useSelector(getError());
   const dispatch = useDispatch();
   console.log(state);
 
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(loadTasks());
   }, []);
 
   // const completeTask = (taskId) => {
