@@ -7,6 +7,7 @@ import {
   loadTasks,
   getTasks,
   getTaskLoadingStatus,
+  createTask,
 } from "./store/task";
 import configureStore from "./store/store";
 import { Provider, useSelector, useDispatch } from "react-redux";
@@ -25,21 +26,16 @@ const App = (params) => {
     dispatch(loadTasks());
   }, []);
 
-  // const completeTask = (taskId) => {
-  //   store.dispatch((dispatch, getState) => {
-  //     console.log(dispatch);
-  //     console.log(getState);
-
-  //     store.dispatch(taskCompleted(taskId));
-  //   });
-  // };
-
   const changeTitle = (taskId) => {
     dispatch(titleChanged(taskId));
   };
 
   const deletedTask = (taskId) => {
     dispatch(taskDeleted(taskId));
+  };
+
+  const createdTask = () => {
+    dispatch(createTask());
   };
 
   if (isLoading) {
@@ -52,6 +48,11 @@ const App = (params) => {
   return (
     <>
       <h1>APP</h1>
+      <ul>
+        <hr />
+        <button onClick={() => createdTask()}>Create new task</button>
+        <hr />
+      </ul>
       <ul>
         {state.map((el) => (
           <li key={el.id}>
@@ -72,9 +73,9 @@ const App = (params) => {
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <App />
-  </Provider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
 );
