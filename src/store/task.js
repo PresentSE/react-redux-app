@@ -63,14 +63,10 @@ export const completeTask = (id) => (dispatch, getState) => {
   dispatch(update({ id, completed: true }));
 };
 
-export const createTask = () => async (dispatch) => {
+export const createTask = (task) => async (dispatch) => {
   dispatch(taskRequested());
   try {
-    const data = await todosService.create({
-      userId: 1,
-      title: "New Task",
-      completed: false,
-    });
+    const data = await todosService.create(task);
     dispatch(create(data));
   } catch (error) {
     dispatch(taskRequestFailed());

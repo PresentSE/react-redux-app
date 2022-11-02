@@ -35,7 +35,13 @@ const App = (params) => {
   };
 
   const createdTask = () => {
-    dispatch(createTask());
+    dispatch(
+      createTask({
+        userId: 1,
+        title: "New Task",
+        completed: false,
+      })
+    );
   };
 
   if (isLoading) {
